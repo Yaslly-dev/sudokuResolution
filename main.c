@@ -20,13 +20,14 @@ int matrizSudoku[9][9] = {
 bool tentativaValida(int matrizSudoku[9][9], int linha, int coluna, int numeroAtual){
 
 // Definir a condição  que valida os números das colunas e linhas
+// Se o valor do índice de uma coluna, em uma determinada linha for igual ao numeroAtual, então o número não será válido para aquela posição
 for (int i=0; i<=8; i++){
 
     if(matrizSudoku[linha][i]==numeroAtual || matrizSudoku[i][coluna]==numeroAtual){
         return false;
     }
 }
-// Função verificadora do quadrante 3x3
+// Função que mapeia onde cada quadrante começa
 
 int padraoQuadrante[9] = {0,0,0,3,3,3,6,6,6};
 
@@ -45,13 +46,21 @@ for (int i = 0; i < 3; i++) {
 // Função solucionadora do problema
 
 bool preencheSudoku(){
+
 for (int linha = 0; linha < 9; linha++) {
         for (int coluna = 0; coluna < 9; coluna++) {
+            // Confere se a posição na matriz está vazia a cada loop
             if (matrizSudoku[linha][coluna] == 0) { 
+                // Confere se o numeroAtual está entre 1 e 9, inclusive
                 for (int numeroAtual = 1; numeroAtual <= 9; numeroAtual++) {
+
+                    // Aplica as regras da tentativaValida
                     if (tentativaValida(matrizSudoku,linha, coluna, numeroAtual)) {
+                        // Declara o valor do indice atual, se as regras são satisfeitas
                         matrizSudoku[linha][coluna] = numeroAtual;
+                        // Vai para a próxima posição
                         if (preencheSudoku()) return true;
+                        //Se preencheSudoku retornar false, significa que a escolha anterior levou a um erro adiante. Desfazemos a escolha resetando para 0.
                         matrizSudoku[linha][coluna] = 0;
                     }
                 }
